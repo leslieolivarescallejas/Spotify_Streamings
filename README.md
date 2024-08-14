@@ -15,5 +15,7 @@ Este proyecto de análisis de datos busca refutar o confirmar 5 hipótesis sobre
 
 ## Introducción
 rellenar
-##Hipótesis
+## Hipótesis
 rellenar 
+## Herramienetas
+rellenar
