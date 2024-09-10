@@ -14,9 +14,18 @@ Este proyecto de análisis de datos busca refutar o confirmar 5 hipótesis sobre
 - [Links de interés](#linksdeinterés)
 
 ## Introducción
-rellenar
+El objetivo de este análisis es refutar o confirmar 5 hipótesis sobre qué hace que una canción sea más escuchada.
+
 ## Hipótesis
-rellenar 
+1. Las canciones con un mayor BPM (Beats Por Minuto) tienen más éxito en términos de cantidad de streams en Spotify.
+2. Las canciones más populares en el ranking de Spotify también tienen un comportamiento similar en otras plataformas como Deezer.
+3. La presencia de una canción en un mayor número de playlists se relaciona con un mayor número de streams. 
+4. Los artistas con un mayor número de canciones en Spotify tienen más streams.
+5. Las características de la canción influyen en el éxito en términos de cantidad de streams en Spotify. 
+
+
+
+
 ## Herramienetas
 rellenar
 
@@ -72,9 +81,6 @@ Hipótesis planteadas sobre qué hace que una canción sea más escuchada:
 - Segmentación de canciones.
 - Cálculo de correlación entre variables.
 
-## Características de la muestra
-
-<img width="709" alt="image" src="https://github.com/user-attachments/assets/741bddff-6e7b-46ea-9830-2e3c7b03b9f7">
 
 ## Hallazgos principales
 
@@ -104,10 +110,8 @@ Del 2019 al 2022, se registra una mayor cantidad de lanzamientos en el cuarto tr
 #### 1. BPM
 Los BPM (Beats Por Minuto) **no tienen influencia** sobre el éxito de las canciones en términos de cantidad de streams en Spotify.
 
-<img width="427" alt="image" src="https://github.com/user-attachments/assets/559d823b-7385-4b45-a4b3-61cf135e70d1">
+![image](https://github.com/user-attachments/assets/e2061c48-707d-4dac-95f1-5620bade8a1e)
 
-
-<img width="403" alt="image" src="https://github.com/user-attachments/assets/eda5abb9-cd68-45af-8b77-3f2c5c531933">
 
 #### 2. Características técnicas
 
