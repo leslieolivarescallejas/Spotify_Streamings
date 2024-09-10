@@ -19,16 +19,14 @@
 
 Se identificaron 50 NULLS en la tabla competition, los cuales se mantuvieron en la base de datos:
 
-```sql
+SELECT 
+  (SELECT COUNT(*) FROM `dataset-spotify.SpotifyCompetition.AnotherPlatforms` WHERE track_id IS NULL) AS null_id,
+  (SELECT COUNT(*) FROM `dataset-spotify.SpotifyCompetition.AnotherPlatforms` WHERE in_apple_playlists IS NULL) AS null_apple_playlists,
+  (SELECT COUNT(*) FROM `dataset-spotify.SpotifyCompetition.AnotherPlatforms` WHERE in_apple_charts IS NULL) AS null_apple_charts,
+  (SELECT COUNT(*) FROM `dataset-spotify.SpotifyCompetition.AnotherPlatforms` WHERE in_deezer_playlists IS NULL) AS null_deezer,
+  (SELECT COUNT(*) FROM `dataset-spotify.SpotifyCompetition.AnotherPlatforms` WHERE in_deezer_charts IS NULL) AS null_deezer_charts,
+  (SELECT COUNT(*) FROM `dataset-spotify.SpotifyCompetition.AnotherPlatforms` WHERE in_shazam_charts IS NULL) AS null_shazam_charts,
 
-SELECT
-  COUNT (*)
-FROM
-  `proyecto-laboratoria-hipotesis.dataset_hipotesis.competition`
-WHERE
-  in_shazam_charts IS NULL
-
-```
 
 Identificación de NULLS en tabla TECHNICAL_INFO, los cuales se mantuveron en la base de datos:
 
