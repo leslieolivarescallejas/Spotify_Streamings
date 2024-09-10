@@ -69,7 +69,6 @@ HAVING COUNT(*) > 1
 Para eliminar datos innecesarios tales como KEY y MODE de la tabla TECHNICAL INFO ya que tienen mucha cantidad de nulos:
 
 ```sql
-
 SELECT * EXCEPT(mode, key) FROM `dataset-spotify.SpotifyTechnicalInfo.TechnicalInfoSongsClean` 
 
 ```
