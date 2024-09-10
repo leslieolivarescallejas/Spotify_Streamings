@@ -56,13 +56,13 @@ La distribución del histograma de streams está inclinada hacia la izquierda, l
 
 
 Los 5 artistas con mayor canciones y mayor streams son *solistas*
-![image](https://github.com/user-attachments/assets/b1fee412-0f83-47bc-9758-f0505164a119)
 
-![image](https://github.com/user-attachments/assets/909e4833-54b3-4b27-b3bc-43fa9448f802)
+![image](https://github.com/user-attachments/assets/b1fee412-0f83-47bc-9758-f0505164a119) ![image](https://github.com/user-attachments/assets/909e4833-54b3-4b27-b3bc-43fa9448f802)
 
 
 El día que tiene más canciones de lanzamiento son los días 7, 9 y 21 del mes
-![image](https://github.com/user-attachments/assets/78941331-92ab-449c-87d5-7dee064440ac)
+![image](https://github.com/user-attachments/assets/41b77e1d-febc-4e73-a782-aa6e98c634ff)
+
 
 
 ## Resultados
