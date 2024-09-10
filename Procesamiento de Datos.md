@@ -17,7 +17,7 @@
 
 ## NULLS
 
-Se identificaron 50 NULLS en la tabla competition, los cuales se mantuvieron en la base de datos:
+NULLS para Competition: 50 en Shazam Charts. Se mantienen.
 
 ```sql
 SELECT 
@@ -29,15 +29,22 @@ SELECT
   (SELECT COUNT(*) FROM `dataset-spotify.SpotifyCompetition.AnotherPlatforms` WHERE in_shazam_charts IS NULL) AS null_shazam_charts,
 ```
 
-Identificación de NULLS en tabla TECHNICAL_INFO, los cuales se mantuveron en la base de datos:
+NULLS para Technical Info: Key. Se mantienen.
 
 ```sql
-
 SELECT 
-*
-FROM `proyecto-laboratoria-hipotesis.dataset_hipotesis. technical_info`
-WHERE
-  `key` IS NULL
+  (SELECT COUNT(*) FROM `dataset-spotify.SpotifyTechnicalInfo.TechnicalInfoSongs` WHERE track_id IS NULL) AS null_id,
+  (SELECT COUNT(*) FROM `dataset-spotify.SpotifyTechnicalInfo.TechnicalInfoSongs` WHERE bpm IS NULL) AS null_bpm,
+  (SELECT COUNT(*) FROM `dataset-spotify.SpotifyTechnicalInfo.TechnicalInfoSongs` WHERE key IS NULL) AS null_key,
+  (SELECT COUNT(*) FROM `dataset-spotify.SpotifyTechnicalInfo.TechnicalInfoSongs` WHERE mode IS NULL) AS null_mode,
+  (SELECT COUNT(*) FROM `dataset-spotify.SpotifyTechnicalInfo.TechnicalInfoSongs` WHERE `danceability_%` IS NULL) AS null_dance,
+  (SELECT COUNT(*) FROM `dataset-spotify.SpotifyTechnicalInfo.TechnicalInfoSongs` WHERE `valence_%` IS NULL) AS null_valence,
+  (SELECT COUNT(*) FROM `dataset-spotify.SpotifyTechnicalInfo.TechnicalInfoSongs` WHERE `energy_%` IS NULL) AS null_energy,
+  (SELECT COUNT(*) FROM `dataset-spotify.SpotifyTechnicalInfo.TechnicalInfoSongs` WHERE `acousticness_%` IS NULL) AS null_acoustic,
+  (SELECT COUNT(*) FROM `dataset-spotify.SpotifyTechnicalInfo.TechnicalInfoSongs` WHERE `instrumentalness_%` IS NULL) AS null_instrumental,
+  (SELECT COUNT(*) FROM `dataset-spotify.SpotifyTechnicalInfo.TechnicalInfoSongs` WHERE `liveness_%` IS NULL) AS null_liveness,
+  (SELECT COUNT(*) FROM `dataset-spotify.SpotifyTechnicalInfo.TechnicalInfoSongs` WHERE `speechiness_%` IS NULL) AS null_speechiness,
+
 ```
 
 
@@ -46,28 +53,22 @@ WHERE
 Identificación de datos duplicados en tabla SPOTIFY:
 
 ```sql
-SELECT
-  track_name,
-  artist_s__name,
-  COUNT(*) AS cantidad
-FROM
-  `proyecto-laboratoria-hipotesis.dataset_hipotesis.spotify`
-GROUP BY
-  track_name,
-  artist_s__name
-HAVING
-  COUNT(*) > 1;
+SELECT 
+ track_name,
+ artists_name,
+ COUNT(*) as duplicados
+FROM `dataset-spotify.SpotifyTrackIn.StreamsCLEAN`
+GROUP BY track_name, artists_name
+HAVING COUNT(*) > 1
 
 ```
 ## DATOS FUERA DEL ALCANCE
 
-Esta QUERY elimina las columnas KEY y MODE de la tabla TECHNICAL INFO:
+Para eliminar datos innecesarios tales como KEY y MODE de la tabla TECHNICAL INFO ya que tienen mucha cantidad de nulos:
 
 ```sql
 
-SELECT 
-* EXCEPT (`key`, mode)
-FROM `proyecto-laboratoria-hipotesis.dataset_hipotesis. technical_info` 
+SELECT * EXCEPT(mode, key) FROM `dataset-spotify.SpotifyTechnicalInfo.TechnicalInfoSongsClean` 
 
 ```
 
@@ -75,12 +76,16 @@ FROM `proyecto-laboratoria-hipotesis.dataset_hipotesis. technical_info`
 
 ### Variables categóricas 
 
-Se identificó un dato discrepante en la columna STREAMS de la tabla SPOTIFY: 
+Se corrigen los carácteres especiales de las canciones y artistas:
+
 
 ```sql
 
-SELECT * FROM `proyecto-laboratoria-hipotesis.dataset_hipotesis.spotify` 
-WHERE streams = "BPM110KeyAModeMajorDanceability53Valence75Energy69Acousticness7Instrumentalness0Liveness17Speechiness3"
+SELECT 
+ track_name,
+ REGEXP_REPLACE(track_name, r'[^a-zA-Z0-9]', ' ') AS track_name_clean,
+FROM `dataset-spotify.SpotifyTrackIn.StreamsCLEAN`
+
 
 ```
 
@@ -90,133 +95,80 @@ STREAMS
 
 ```sql
 
-SELECT
-  MAX(streams_int) AS max_streams,
-  MIN(streams_int) AS min_streams,
-  AVG(streams_int) AS avg_streams
-FROM (
-  SELECT 
-    CAST(streams AS INT64) AS streams_INT
-  FROM 
-    `proyecto-laboratoria-hipotesis.dataset_hipotesis.spotify`
-  WHERE 
-    REGEXP_CONTAINS(streams, r'^[0-9]+$')
+SELECT 
+MAX(streams_integer) as MAXIMO,
+MIN(streams_integer) AS MINIMUM,
+AVG(streams_integer) AS AVERAGE
+FROM `dataset-spotify.SpotifyTrackIn.StreamsCLEAN2`
 
 ```
 
 ## CAMBIAR TIPO DE DATO
 
-Esta QUERY convierte la variable STREAMS de un dato STRING a INTERGER; y elimina el valor discrepante: 
+Necesitamos convertir datos STRINGS a INTEGER para tener lectura de números y no sólo letras: 
 
 ```sql
 
-SELECT 
-  *,
-  CAST(streams AS INT64) AS streams_INT
-FROM 
-  `proyecto-laboratoria-hipotesis.dataset_hipotesis.spotify`
-WHERE 
-  REGEXP_CONTAINS(streams, r'^[0-9]+$');
+SELECT SAFE_CAST(streams AS INT64) AS streams_clean_inter
+FROM `dataset-spotify.SpotifyTrackIn.Streams` 
+WHERE REGEXP_CONTAINS(streams, r'^[0-9]+$');
 
 ```
 
 ## NUEVAS VARIABLES
 
-Creación de nueva variable de fecha de lanzamiento de las canciones:
+Se crea la variable sumatoria de Playlists:
 
 ```sql
 
-SELECT 
-track_id, track_name, artist_s__name,
-  PARSE_DATE('%Y-%m-%d', CONCAT(
-    CAST(released_year AS STRING), '-', 
-    LPAD(CAST(released_month AS STRING), 2, '0'), '-', 
-    LPAD(CAST(released_day AS STRING), 2, '0')
-  )) AS release_date
-FROM 
-  `proyecto-laboratoria-hipotesis.dataset_hipotesis.spotify`
+SELECT track_id, in_apple_playlists, in_deezer_playlists, in_spotify_playlists, in_deezer_playlists+in_apple_playlists+in_spotify_playlists AS SUM_PLAYLIST FROM `dataset-spotify.datasetspotify2.leftjoin-alltables-view`
 
 ```
 
 ## UNIÓN DE TABLAS
 
-VIEW de
-- Unión de tablas: SPOTIFY, TECHNICAL INFO y COMPETITION a través de LEFT JOIN,
-- Creación de nueva variable de PARTICIPACIÓN EN PLAYLIST a través de SUMA,
-- Creación de tabla auxiliar de TOTAL DE CANCIONES por artista a través de WITH:
-
+Se crea una VIEW de Unión de tablas a través de left join:
 ```sql
+CREATE VIEW dataset-spotify.`SpotifyTrackIn.StreamsTechCompJOINLEFTVIEW` as 
+SELECT C.*, T.* EXCEPT(track_id), S.* EXCEPT(track_id)
+FROM `dataset-spotify.SpotifyCompetition.CompetitionCleaned` AS C
+LEFT JOIN
+`dataset-spotify.SpotifyTechnicalInfo.TechnicalInfoSongsClean` AS T
+ON C.track_id = T.track_id
+LEFT JOIN
+`dataset-spotify.SpotifyTrackIn.StreamsCleaned` AS S
+ON 
+C.track_id = S.track_id
 
-WITH total_canciones_por_artista AS (
+```
+
+  
+- Se utiliza comando WITH para crear tabla auciliar de canciones por artista:
+  
+```sql
+ WITH songs_by_artists AS (
   SELECT 
-    COUNT(*) AS total_canciones, 
-    artist_s_name
+    COUNT(*) AS songs_by_artist, 
+    artist_name_clean
   FROM
-    `proyecto-laboratoria-hipotesis.dataset_hipotesis.spotify_cleaned` 
+    `dataset-spotify.SpotifyTrackIn.StreamsTechCompDataset`
   WHERE 
     artist_count = 1  -- Filtrar solo canciones con un solo artista
   GROUP BY 
-    artist_s_name
+    artist_name_clean
 )
-
 SELECT 
-  A.track_id,
-  A.track_name,
-  A.artist_s_name,
-  A.release_date,
-  A.streams,
-  A.artist_count,
-  A.released_year,
-  A.released_month,
-  A.released_day,
-  A.in_spotify_playlists,
-  A.in_spotify_charts,
-  B.bpm,
-  B.`danceability_%`,
-  B.`valence_%`,
-  B.`energy_%`,
-  B.`acousticness_%`,
-  B.`instrumentalness_%`,
-  B.`liveness_%`,
-  B.`speechiness_%`,
-  C.in_apple_playlists,
-  C.in_apple_charts,
-  C.in_deezer_playlists,
-  C.in_deezer_charts,
-  C.in_shazam_charts,
-  t.total_canciones,
-  A.in_spotify_playlists + C.in_apple_playlists + C.in_deezer_playlists AS total_playlists  -- Nueva columna SUMA DE IN PLAYLISTS
+  songs_by_artist, 
+  artist_name_clean
 FROM 
-  `proyecto-laboratoria-hipotesis.dataset_hipotesis.spotify_cleaned` AS A
-LEFT JOIN (
-  SELECT 
-    track_id,
-    bpm,
-    `danceability_%`,
-    `valence_%`,
-    `energy_%`,
-    `acousticness_%`,
-    `instrumentalness_%`,
-    `liveness_%`,
-    `speechiness_%`
-  FROM `proyecto-laboratoria-hipotesis.dataset_hipotesis.view_info_tecnica_limpia`
-) AS B
-ON A.track_id = B.track_id
-LEFT JOIN (
-  SELECT 
-    track_id,
-    in_apple_playlists,
-    in_apple_charts,
-    in_deezer_playlists,
-    in_deezer_charts,
-    in_shazam_charts
-  FROM `proyecto-laboratoria-hipotesis.dataset_hipotesis.competition`
-) AS C
-ON A.track_id = C.track_id
-LEFT JOIN
-  total_canciones_por_artista AS t
-ON A.artist_s_name = t.artist_s_name;
+  songs_by_artists;
+```
 
+- Se crea nueva tabla con nueva variable de sumatoria de playlists
+```sql
+CREATE TABLE `dataset-spotify.SpotifyTrackIn.DatasetStreamsTechCompSum` AS
+SELECT *, in_deezer_playlists+in_apple_playlists+in_spotify_playlists AS SUM_PLAYLIST 
+FROM `dataset-spotify.SpotifyTrackIn.StreamsTechCompDataset`
 ```
 
 ## CÁLCULO DE CUARTILES
