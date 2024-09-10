@@ -51,16 +51,16 @@ El objetivo de este análisis es refutar o confirmar 5 hipótesis sobre qué hac
 ## Hallazgos principales
 
 
-La distribución del histograma de streams está inclinada hacia la izquierda, lo que significa que hay un pequeño número de canciones que poseen alta cantidad de streams. Estas canciones son las que se consideran "éxitos" en plataforma.
+- La distribución del histograma de streams está inclinada hacia la izquierda, lo que significa que hay un pequeño número de canciones que poseen alta cantidad de streams. Estas canciones son las que se consideran "éxitos" en plataforma.
 ![image](https://github.com/user-attachments/assets/3848e1fa-b20e-4334-b89a-ef3c9b69252d)
 
 
-Los 5 artistas con mayor canciones y mayor streams son *solistas*
+- Los 5 artistas con mayor canciones y mayor streams son *solistas*
 
 ![image](https://github.com/user-attachments/assets/b1fee412-0f83-47bc-9758-f0505164a119) ![image](https://github.com/user-attachments/assets/909e4833-54b3-4b27-b3bc-43fa9448f802)
 
 
-El día que tiene más canciones de lanzamiento son los días 7, 9 y 21 del mes
+- El día que tiene más canciones de lanzamiento son los días 7, 9 y 21 del mes
 ![image](https://github.com/user-attachments/assets/41b77e1d-febc-4e73-a782-aa6e98c634ff)
 
 
@@ -103,9 +103,9 @@ Se valida hipótesis, ya que mayor cantidad de canciones, se comporta de igual f
 
 ## Recomendaciones
 
-1. Se recomienda considerar características de canciones según cantidad de streams en plataforma, y en base a artistas líderes.
-2. El mes que más posee lanzamientos es en enero, en los días 7, 9 o 21 de cada mes.
-3. Los solistas son quienes más éxito tienen en comparación a duetos y grupos.
+- 1. Se recomienda considerar características de canciones según cantidad de streams en plataforma, y en base a artistas líderes.
+- 2. El mes que más posee lanzamientos es en enero, en los días 7, 9 o 21 de cada mes.
+- 3. Los solistas son quienes más éxito tienen en comparación a duetos y grupos.
 
 
    ## LINKS DE INTERÉS
