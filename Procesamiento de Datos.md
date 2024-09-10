@@ -62,6 +62,8 @@ GROUP BY track_name, artists_name
 HAVING COUNT(*) > 1
 
 ```
+
+
 ## DATOS FUERA DEL ALCANCE
 
 Para eliminar datos innecesarios tales como KEY y MODE de la tabla TECHNICAL INFO ya que tienen mucha cantidad de nulos:
@@ -71,6 +73,8 @@ Para eliminar datos innecesarios tales como KEY y MODE de la tabla TECHNICAL INF
 SELECT * EXCEPT(mode, key) FROM `dataset-spotify.SpotifyTechnicalInfo.TechnicalInfoSongsClean` 
 
 ```
+
+
 
 ## DATOS DISCREPANTES 
 
@@ -89,6 +93,8 @@ FROM `dataset-spotify.SpotifyTrackIn.StreamsCLEAN`
 
 ```
 
+
+
 ### Variables numéricas
 
 STREAMS 
@@ -103,6 +109,8 @@ FROM `dataset-spotify.SpotifyTrackIn.StreamsCLEAN2`
 
 ```
 
+
+
 ## CAMBIAR TIPO DE DATO
 
 Necesitamos convertir datos STRINGS a INTEGER para tener lectura de números y no sólo letras: 
@@ -115,6 +123,8 @@ WHERE REGEXP_CONTAINS(streams, r'^[0-9]+$');
 
 ```
 
+
+
 ## NUEVAS VARIABLES
 
 Se crea la variable sumatoria de Playlists:
@@ -124,6 +134,8 @@ Se crea la variable sumatoria de Playlists:
 SELECT track_id, in_apple_playlists, in_deezer_playlists, in_spotify_playlists, in_deezer_playlists+in_apple_playlists+in_spotify_playlists AS SUM_PLAYLIST FROM `dataset-spotify.datasetspotify2.leftjoin-alltables-view`
 
 ```
+
+
 
 ## UNIÓN DE TABLAS
 
@@ -171,6 +183,8 @@ SELECT *, in_deezer_playlists+in_apple_playlists+in_spotify_playlists AS SUM_PLA
 FROM `dataset-spotify.SpotifyTrackIn.StreamsTechCompDataset`
 ```
 
+
+
 ## CÁLCULO DE CUARTILES
 
 Cálculo de cuartiles a través de la función NTILE(4) OVER (ORDER BY___):
@@ -191,6 +205,8 @@ LEFT JOIN DatasetWithQuartiles
 ON a.streams = DatasetWithQuartiles.streams;
 
 ```
+
+
 
 # CORRELACIÓN DE PEARSON
 
